@@ -13,7 +13,7 @@ import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
 
-/** Pruebas automatizadas de la práctica 5A. */
+
 public class A5Test {
 
     private static final double TOLERANCE = 0.00001;

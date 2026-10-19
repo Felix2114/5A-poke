@@ -1,4 +1,3 @@
-/** Calcula la función gamma para los valores requeridos por la distribución t. */
 public class GammaFunction {
 
     private static final double[] LANCZOS_COEFFICIENTS = {
@@ -15,12 +14,6 @@ public class GammaFunction {
 
     private double gammaValue;
 
-    /**
-     * Calcula Γ(n) = (n - 1)! para n entero positivo.
-     *
-     * @param intValue argumento entero positivo
-     * @return el valor de Γ(intValue)
-     */
     public double computeIntGamma(int intValue) {
         if (intValue <= 0) {
             throw new IllegalArgumentException("Gamma solo está definida aquí para valores positivos.");
@@ -35,13 +28,6 @@ public class GammaFunction {
         return gammaValue;
     }
 
-    /**
-     * Calcula Γ(x) para un valor real positivo. Para los grados de libertad
-     * enteros del ejercicio se usa, entre otros, Γ(n + 1/2).
-     *
-     * @param doubleValue argumento real positivo
-     * @return el valor de Γ(doubleValue)
-     */
     public double computeDblGamma(double doubleValue) {
         if (!Double.isFinite(doubleValue) || doubleValue <= 0.0) {
             throw new IllegalArgumentException("El argumento de gamma debe ser positivo y finito.");

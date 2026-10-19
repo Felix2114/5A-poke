@@ -1,7 +1,6 @@
 import java.util.Locale;
 import java.util.Scanner;
 
-/** Coordina la captura de datos, la integración y la presentación del resultado. */
 public class Logic {
 
     private static final String OUTPUT_FILE = "output/output5.txt";
@@ -21,7 +20,6 @@ public class Logic {
         dblE = simpsonIntegration.getDblE();
     }
 
-    /** Solicita valor inicial, valor final y DOF, en ese orden. */
     public void logica() {
         Scanner scanner = new Scanner(System.in);
 
@@ -41,7 +39,6 @@ public class Logic {
         }
     }
 
-    /** Permite calcular el resultado sin interacción de consola. */
     public double calcular(double initialX, double finalX, int dof) {
         dblInitialX = initialX;
         dblX = finalX;
