@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Logic.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">5a-simpson-rule</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Logic.java</span></div><h1>Logic.java</h1><pre class="source lang-java linenums">import java.util.Locale;
+import java.util.Scanner;
+
+public class Logic {
+
+    private static final String OUTPUT_FILE = &quot;output/output5.txt&quot;;
+
+    private int intNumSeg;
+    private double dblE;
+    private int intDOF;
+    private double dblX;
+    private double dblInitialX;
+
+    private final SimpsonIntegration simpsonIntegration;
+    private final Output output;
+
+<span class="fc" id="L17">    public Logic() {</span>
+<span class="fc" id="L18">        simpsonIntegration = new SimpsonIntegration();</span>
+<span class="fc" id="L19">        output = new Output();</span>
+<span class="fc" id="L20">        dblE = simpsonIntegration.getDblE();</span>
+<span class="fc" id="L21">    }</span>
+
+    public void logica() {
+<span class="fc" id="L24">        Scanner scanner = new Scanner(System.in);</span>
+
+        try {
+<span class="fc" id="L27">            dblInitialX = readDouble(scanner, &quot;Valor inicial: &quot;);</span>
+<span class="fc" id="L28">            dblX = readDouble(scanner, &quot;Valor final: &quot;);</span>
+<span class="fc" id="L29">            intDOF = readPositiveInt(scanner, &quot;DOF (grados de libertad): &quot;);</span>
+
+<span class="fc" id="L31">            double finalValue = calcular(dblInitialX, dblX, intDOF);</span>
+<span class="fc" id="L32">            String result = createResult(finalValue);</span>
+
+<span class="fc" id="L34">            System.out.print(result);</span>
+<span class="fc" id="L35">            output.writeData(OUTPUT_FILE, result);</span>
+<span class="fc" id="L36">            System.out.println(&quot;Resultado guardado en &quot; + OUTPUT_FILE);</span>
+<span class="fc" id="L37">        } catch (IllegalArgumentException | IllegalStateException e) {</span>
+<span class="fc" id="L38">            System.out.println(&quot;No se pudo realizar la integración: &quot; + e.getMessage());</span>
+<span class="fc" id="L39">        }</span>
+<span class="fc" id="L40">    }</span>
+
+    public double calcular(double initialX, double finalX, int dof) {
+<span class="fc" id="L43">        dblInitialX = initialX;</span>
+<span class="fc" id="L44">        dblX = finalX;</span>
+<span class="fc" id="L45">        intDOF = dof;</span>
+
+<span class="fc" id="L47">        double finalValue = simpsonIntegration.integrate(initialX, finalX, dof);</span>
+<span class="fc" id="L48">        intNumSeg = simpsonIntegration.getIntNumSeg();</span>
+<span class="fc" id="L49">        dblE = simpsonIntegration.getDblE();</span>
+<span class="fc" id="L50">        return finalValue;</span>
+    }
+
+    public int getIntNumSeg() {
+<span class="fc" id="L54">        return intNumSeg;</span>
+    }
+
+    public double getDblE() {
+<span class="fc" id="L58">        return dblE;</span>
+    }
+
+    private double readDouble(Scanner scanner, String prompt) {
+<span class="fc" id="L62">        System.out.print(prompt);</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        if (!scanner.hasNextLine()) {</span>
+<span class="fc" id="L64">            throw new IllegalStateException(&quot;Falta un dato de entrada.&quot;);</span>
+        }
+
+<span class="fc" id="L67">        String value = scanner.nextLine().trim().replace(',', '.');</span>
+        try {
+<span class="fc" id="L69">            double parsedValue = Double.parseDouble(value);</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">            if (!Double.isFinite(parsedValue)) {</span>
+<span class="fc" id="L71">                throw new NumberFormatException();</span>
+            }
+<span class="fc" id="L73">            return parsedValue;</span>
+<span class="fc" id="L74">        } catch (NumberFormatException e) {</span>
+<span class="fc" id="L75">            throw new IllegalArgumentException(&quot;Se esperaba un número válido.&quot;);</span>
+        }
+    }
+
+    private int readPositiveInt(Scanner scanner, String prompt) {
+<span class="fc" id="L80">        System.out.print(prompt);</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">        if (!scanner.hasNextLine()) {</span>
+<span class="fc" id="L82">            throw new IllegalStateException(&quot;Falta un dato de entrada.&quot;);</span>
+        }
+
+        try {
+<span class="fc" id="L86">            int value = Integer.parseInt(scanner.nextLine().trim());</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">            if (value &lt;= 0) {</span>
+<span class="fc" id="L88">                throw new NumberFormatException();</span>
+            }
+<span class="fc" id="L90">            return value;</span>
+<span class="fc" id="L91">        } catch (NumberFormatException e) {</span>
+<span class="fc" id="L92">            throw new IllegalArgumentException(&quot;DOF debe ser un entero mayor que cero.&quot;);</span>
+        }
+    }
+
+    private String createResult(double finalValue) {
+<span class="fc" id="L97">        return String.format(Locale.US, &quot;%.5f%n&quot;, finalValue);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

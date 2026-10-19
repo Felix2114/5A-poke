@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GammaFunction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">5a-simpson-rule</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">GammaFunction.java</span></div><h1>GammaFunction.java</h1><pre class="source lang-java linenums"><span class="fc" id="L1">public class GammaFunction {</span>
+    private double gammaValue;
+
+    public double calcularGammaEntero(int intValue) {
+<span class="fc bfc" id="L5" title="All 2 branches covered.">        if (intValue &lt;= 0) {</span>
+<span class="fc" id="L6">            throw new IllegalArgumentException(&quot;Gamma solo está definida aquí para valores positivos.&quot;);</span>
+        }
+
+<span class="fc" id="L9">        double result = 1.0;</span>
+<span class="fc bfc" id="L10" title="All 2 branches covered.">        for (int value = 2; value &lt; intValue; value++) {</span>
+<span class="fc" id="L11">            result *= value;</span>
+        }
+
+<span class="fc" id="L14">        gammaValue = result;</span>
+<span class="fc" id="L15">        return gammaValue;</span>
+    }
+
+    public double calcularGammaDecimal(double doubleValue) {
+<span class="fc bfc" id="L19" title="All 4 branches covered.">        if (!Double.isFinite(doubleValue) || doubleValue &lt;= 0.0) {</span>
+<span class="fc" id="L20">            throw new IllegalArgumentException(&quot;El argumento de gamma debe ser positivo y finito.&quot;);</span>
+        }
+
+<span class="fc bfc" id="L23" title="All 4 branches covered.">        if (doubleValue == Math.rint(doubleValue) &amp;&amp; doubleValue &lt;= 171.0) {</span>
+<span class="fc" id="L24">            return calcularGammaEntero((int) Math.rint(doubleValue));</span>
+        }
+
+<span class="fc" id="L27">        double value = doubleValue;</span>
+<span class="fc" id="L28">        double divisor = 1.0;</span>
+
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        while (value &lt; 20.0) {</span>
+<span class="fc" id="L31">            divisor = divisor * value;</span>
+<span class="fc" id="L32">            value = value + 1.0;</span>
+        }
+
+<span class="fc" id="L35">        gammaValue = Math.exp(calcularLogGamma(value)) / divisor;</span>
+<span class="fc" id="L36">        return gammaValue;</span>
+    }
+
+    public double obtenerValorGamma() {
+<span class="fc" id="L40">        return gammaValue;</span>
+    }
+
+    private double calcularLogGamma(double value) {
+<span class="fc" id="L44">        double correction = 1.0 / (12.0 * value);</span>
+<span class="fc" id="L45">        correction = correction - 1.0 / (360.0 * Math.pow(value, 3));</span>
+<span class="fc" id="L46">        correction = correction + 1.0 / (1260.0 * Math.pow(value, 5));</span>
+<span class="fc" id="L47">        correction = correction - 1.0 / (1680.0 * Math.pow(value, 7));</span>
+
+<span class="fc" id="L49">        return (value - 0.5) * Math.log(value)</span>
+            - value
+<span class="fc" id="L51">            + 0.5 * Math.log(2.0 * Math.PI)</span>
+            + correction;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>
