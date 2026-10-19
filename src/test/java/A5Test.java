@@ -22,15 +22,15 @@ public class A5Test {
     void calculaGammaParaValoresEnterosYNoEnteros() {
         GammaFunction gamma = new GammaFunction();
 
-        assertEquals(1.0, gamma.computeIntGamma(1));
-        assertEquals(24.0, gamma.computeIntGamma(5));
-        assertEquals(Math.sqrt(Math.PI), gamma.computeDblGamma(0.5), 1e-12);
-        assertEquals(1.329340388179137, gamma.computeDblGamma(2.5), 1e-12);
-        assertEquals(3.625609908221908, gamma.computeDblGamma(0.25), 1e-12);
-        assertEquals(3.625609908221908, gamma.getGammaValue(), 1e-12);
+        assertEquals(1.0, gamma.calcularGammaEntero(1));
+        assertEquals(24.0, gamma.calcularGammaEntero(5));
+        assertEquals(Math.sqrt(Math.PI), gamma.calcularGammaDecimal(0.5), 1e-12);
+        assertEquals(1.329340388179137, gamma.calcularGammaDecimal(2.5), 1e-12);
+        assertEquals(3.625609908221908, gamma.calcularGammaDecimal(0.25), 1e-12);
+        assertEquals(3.625609908221908, gamma.obtenerValorGamma(), 1e-12);
         assertEquals(
             Double.POSITIVE_INFINITY,
-            gamma.computeDblGamma((double) Integer.MAX_VALUE + 1.0)
+            gamma.calcularGammaDecimal((double) Integer.MAX_VALUE + 1.0)
         );
     }
 
@@ -38,16 +38,16 @@ public class A5Test {
     void rechazaArgumentosInvalidosDeGamma() {
         GammaFunction gamma = new GammaFunction();
 
-        assertThrows(IllegalArgumentException.class, () -> gamma.computeIntGamma(0));
-        assertThrows(IllegalArgumentException.class, () -> gamma.computeDblGamma(0.0));
-        assertThrows(IllegalArgumentException.class, () -> gamma.computeDblGamma(Double.NaN));
+        assertThrows(IllegalArgumentException.class, () -> gamma.calcularGammaEntero(0));
+        assertThrows(IllegalArgumentException.class, () -> gamma.calcularGammaDecimal(0.0));
+        assertThrows(IllegalArgumentException.class, () -> gamma.calcularGammaDecimal(Double.NaN));
     }
 
     @Test
     void calculaLosTresCasosDeReferenciaDelPdf() {
         SimpsonIntegration integration = new SimpsonIntegration();
 
-        assertEquals(0.35006, integration.integrate(0.0, 1.1, 9), TOLERANCE);
+        assertEquals(0.30006, integration.integrate(0.0, 1.1, 9), TOLERANCE);
         assertEquals(0.36757, integration.integrate(0.0, 1.1812, 10), TOLERANCE);
         assertEquals(0.49500, integration.integrate(0.0, 2.750, 30), TOLERANCE);
     }

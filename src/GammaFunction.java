@@ -1,20 +1,7 @@
 public class GammaFunction {
-
-    private static final double[] LANCZOS_COEFFICIENTS = {
-        0.99999999999980993,
-        676.5203681218851,
-        -1259.1392167224028,
-        771.32342877765313,
-        -176.61502916214059,
-        12.507343278686905,
-        -0.13857109526572012,
-        9.9843695780195716e-6,
-        1.5056327351493116e-7
-    };
-
     private double gammaValue;
 
-    public double computeIntGamma(int intValue) {
+    public double calcularGammaEntero(int intValue) {
         if (intValue <= 0) {
             throw new IllegalArgumentException("Gamma solo está definida aquí para valores positivos.");
         }
@@ -28,42 +15,40 @@ public class GammaFunction {
         return gammaValue;
     }
 
-    public double computeDblGamma(double doubleValue) {
+    public double calcularGammaDecimal(double doubleValue) {
         if (!Double.isFinite(doubleValue) || doubleValue <= 0.0) {
             throw new IllegalArgumentException("El argumento de gamma debe ser positivo y finito.");
         }
 
-        if (doubleValue == Math.rint(doubleValue)
-            && doubleValue <= Integer.MAX_VALUE) {
-            return computeIntGamma((int) Math.rint(doubleValue));
+        if (doubleValue == Math.rint(doubleValue) && doubleValue <= 171.0) {
+            return calcularGammaEntero((int) Math.rint(doubleValue));
         }
 
-        gammaValue = Math.exp(logGamma(doubleValue));
+        double value = doubleValue;
+        double divisor = 1.0;
+
+        while (value < 20.0) {
+            divisor = divisor * value;
+            value = value + 1.0;
+        }
+
+        gammaValue = Math.exp(calcularLogGamma(value)) / divisor;
         return gammaValue;
     }
 
-    public double getGammaValue() {
+    public double obtenerValorGamma() {
         return gammaValue;
     }
 
-    private double logGamma(double value) {
-        if (value < 0.5) {
-            return Math.log(Math.PI)
-                - Math.log(Math.sin(Math.PI * value))
-                - logGamma(1.0 - value);
-        }
+    private double calcularLogGamma(double value) {
+        double correction = 1.0 / (12.0 * value);
+        correction = correction - 1.0 / (360.0 * Math.pow(value, 3));
+        correction = correction + 1.0 / (1260.0 * Math.pow(value, 5));
+        correction = correction - 1.0 / (1680.0 * Math.pow(value, 7));
 
-        double adjustedValue = value - 1.0;
-        double series = LANCZOS_COEFFICIENTS[0];
-
-        for (int index = 1; index < LANCZOS_COEFFICIENTS.length; index++) {
-            series += LANCZOS_COEFFICIENTS[index] / (adjustedValue + index);
-        }
-
-        double t = adjustedValue + LANCZOS_COEFFICIENTS.length - 1.5;
-        return 0.5 * Math.log(2.0 * Math.PI)
-            + (adjustedValue + 0.5) * Math.log(t)
-            - t
-            + Math.log(series);
+        return (value - 0.5) * Math.log(value)
+            - value
+            + 0.5 * Math.log(2.0 * Math.PI)
+            + correction;
     }
 }

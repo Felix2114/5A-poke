@@ -113,9 +113,9 @@ public class SimpsonIntegration {
         }
 
         this.intDOF = intDOF;
-        double numerator = gammaFunction.computeDblGamma((intDOF + 1.0) / 2.0);
+        double numerator = gammaFunction.calcularGammaDecimal((intDOF + 1.0) / 2.0);
         double denominator = Math.sqrt(intDOF * Math.PI)
-            * gammaFunction.computeDblGamma(intDOF / 2.0);
+            * gammaFunction.calcularGammaDecimal(intDOF / 2.0);
         dblCoeff = numerator / denominator;
         return dblCoeff;
     }
