@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-/** Escribe el resultado del cálculo en un archivo de texto. */
+
 public class Output {
 
     public void writeData(String outFile, String outText) {

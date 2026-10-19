@@ -1,8 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SimpsonIntegration.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">5a-simpson-rule</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">SimpsonIntegration.java</span></div><h1>SimpsonIntegration.java</h1><pre class="source lang-java linenums">import java.util.Arrays;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SimpsonIntegration.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">5a-simpson-rule</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">SimpsonIntegration.java</span></div><h1>SimpsonIntegration.java</h1><pre class="source lang-java linenums">import java.util.Arrays;
 
-/**
- * Integra la función de densidad t de Student mediante la regla de Simpson.
- */
+
 public class SimpsonIntegration {
 
     public static final int INITIAL_NUM_SEGMENTS = 10;
@@ -25,194 +23,181 @@ public class SimpsonIntegration {
     private final GammaFunction gammaFunction;
 
     public SimpsonIntegration() {
-<span class="fc" id="L28">        this(DEFAULT_ERROR);</span>
-<span class="fc" id="L29">    }</span>
+<span class="fc" id="L26">        this(DEFAULT_ERROR);</span>
+<span class="fc" id="L27">    }</span>
 
-<span class="fc" id="L31">    public SimpsonIntegration(double dblE) {</span>
-<span class="fc bfc" id="L32" title="All 4 branches covered.">        if (!Double.isFinite(dblE) || dblE &lt;= 0.0) {</span>
-<span class="fc" id="L33">            throw new IllegalArgumentException(&quot;El error aceptable debe ser positivo.&quot;);</span>
+<span class="fc" id="L29">    public SimpsonIntegration(double dblE) {</span>
+<span class="fc bfc" id="L30" title="All 4 branches covered.">        if (!Double.isFinite(dblE) || dblE &lt;= 0.0) {</span>
+<span class="fc" id="L31">            throw new IllegalArgumentException(&quot;El error aceptable debe ser positivo.&quot;);</span>
         }
 
-<span class="fc" id="L36">        this.dblE = dblE;</span>
-<span class="fc" id="L37">        gammaFunction = new GammaFunction();</span>
-<span class="fc" id="L38">    }</span>
+<span class="fc" id="L34">        this.dblE = dblE;</span>
+<span class="fc" id="L35">        gammaFunction = new GammaFunction();</span>
+<span class="fc" id="L36">    }</span>
 
-    /**
-     * Obtiene el área bajo la distribución t entre los dos límites indicados.
-     * Se duplica el número de segmentos hasta que dos aproximaciones
-     * consecutivas difieren menos que el error aceptable.
-     */
+  
     public double integrate(double initialX, double finalX, int intDOF) {
-<span class="fc" id="L46">        validateInput(initialX, finalX, intDOF);</span>
+<span class="fc" id="L40">        validateInput(initialX, finalX, intDOF);</span>
 
-<span class="fc" id="L48">        dblInitialX = initialX;</span>
-<span class="fc" id="L49">        dblX = finalX;</span>
-<span class="fc" id="L50">        this.intDOF = intDOF;</span>
+<span class="fc" id="L42">        dblInitialX = initialX;</span>
+<span class="fc" id="L43">        dblX = finalX;</span>
+<span class="fc" id="L44">        this.intDOF = intDOF;</span>
 
-<span class="fc" id="L52">        intNumSeg = INITIAL_NUM_SEGMENTS;</span>
-<span class="fc" id="L53">        double previousValue = calculateCurrentApproximation();</span>
+<span class="fc" id="L46">        intNumSeg = INITIAL_NUM_SEGMENTS;</span>
+<span class="fc" id="L47">        double previousValue = calculateCurrentApproximation();</span>
 
         while (true) {
-<span class="fc" id="L56">            intNumSeg *= 2;</span>
-<span class="fc" id="L57">            double currentValue = calculateCurrentApproximation();</span>
+<span class="fc" id="L50">            intNumSeg *= 2;</span>
+<span class="fc" id="L51">            double currentValue = calculateCurrentApproximation();</span>
 
-<span class="fc bfc" id="L59" title="All 2 branches covered.">            if (Math.abs(currentValue - previousValue) &lt; dblE) {</span>
-<span class="fc" id="L60">                return currentValue;</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">            if (Math.abs(currentValue - previousValue) &lt; dblE) {</span>
+<span class="fc" id="L54">                return currentValue;</span>
             }
 
-<span class="fc" id="L63">            previousValue = currentValue;</span>
-<span class="fc" id="L64">        }</span>
+<span class="fc" id="L57">            previousValue = currentValue;</span>
+<span class="fc" id="L58">        }</span>
     }
 
-    /** Calcula W = (valor final - valor inicial) / número de segmentos. */
-    public double computeW(int intNumSeg, double dblX) {
-<span class="fc bfc" id="L69" title="All 4 branches covered.">        if (intNumSeg &lt;= 0 || intNumSeg % 2 != 0) {</span>
-<span class="fc" id="L70">            throw new IllegalArgumentException(&quot;El número de segmentos debe ser positivo y par.&quot;);</span>
+       public double computeW(int intNumSeg, double dblX) {
+<span class="fc bfc" id="L62" title="All 4 branches covered.">        if (intNumSeg &lt;= 0 || intNumSeg % 2 != 0) {</span>
+<span class="fc" id="L63">            throw new IllegalArgumentException(&quot;El número de segmentos debe ser positivo y par.&quot;);</span>
         }
 
-<span class="fc" id="L73">        this.intNumSeg = intNumSeg;</span>
-<span class="fc" id="L74">        this.dblX = dblX;</span>
-<span class="fc" id="L75">        dblW = (dblX - dblInitialX) / intNumSeg;</span>
-<span class="fc" id="L76">        return dblW;</span>
+<span class="fc" id="L66">        this.intNumSeg = intNumSeg;</span>
+<span class="fc" id="L67">        this.dblX = dblX;</span>
+<span class="fc" id="L68">        dblW = (dblX - dblInitialX) / intNumSeg;</span>
+<span class="fc" id="L69">        return dblW;</span>
     }
-
-    /** Calcula xi = valor inicial + iW, para i desde 0 hasta numSeg. */
     public double[] computeXi(int intNumSeg) {
-<span class="fc bfc" id="L81" title="All 2 branches covered.">        if (intNumSeg != this.intNumSeg) {</span>
-<span class="fc" id="L82">            throw new IllegalArgumentException(&quot;El número de segmentos no coincide con W.&quot;);</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        if (intNumSeg != this.intNumSeg) {</span>
+<span class="fc" id="L73">            throw new IllegalArgumentException(&quot;El número de segmentos no coincide con W.&quot;);</span>
         }
 
-<span class="fc" id="L85">        dblTotXi = new double[intNumSeg + 1];</span>
-<span class="fc bfc" id="L86" title="All 2 branches covered.">        for (int index = 0; index &lt;= intNumSeg; index++) {</span>
-<span class="fc" id="L87">            dblTotXi[index] = dblInitialX + index * dblW;</span>
+<span class="fc" id="L76">        dblTotXi = new double[intNumSeg + 1];</span>
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        for (int index = 0; index &lt;= intNumSeg; index++) {</span>
+<span class="fc" id="L78">            dblTotXi[index] = dblInitialX + index * dblW;</span>
         }
-<span class="fc" id="L89">        return Arrays.copyOf(dblTotXi, dblTotXi.length);</span>
+<span class="fc" id="L80">        return Arrays.copyOf(dblTotXi, dblTotXi.length);</span>
     }
 
-    /** Calcula 1 + (xi² / dof), la base de la potencia de la distribución t. */
     public double[] computeFirstBaseTerms(
         int intNumSeg,
         double[] dblTotXi,
         int intDOF
     ) {
-<span class="fc bfc" id="L98" title="All 6 branches covered.">        if (dblTotXi == null || dblTotXi.length != intNumSeg + 1 || intDOF &lt;= 0) {</span>
-<span class="fc" id="L99">            throw new IllegalArgumentException(&quot;Los datos para calcular la distribución t no son válidos.&quot;);</span>
+<span class="fc bfc" id="L88" title="All 6 branches covered.">        if (dblTotXi == null || dblTotXi.length != intNumSeg + 1 || intDOF &lt;= 0) {</span>
+<span class="fc" id="L89">            throw new IllegalArgumentException(&quot;Los datos para calcular la distribución t no son válidos.&quot;);</span>
         }
 
-<span class="fc" id="L102">        this.intDOF = intDOF;</span>
-<span class="fc" id="L103">        dblFirstBaseTerms = new double[intNumSeg + 1];</span>
-<span class="fc bfc" id="L104" title="All 2 branches covered.">        for (int index = 0; index &lt;= intNumSeg; index++) {</span>
-<span class="fc" id="L105">            dblFirstBaseTerms[index] = 1.0 + (dblTotXi[index] * dblTotXi[index] / intDOF);</span>
+<span class="fc" id="L92">        this.intDOF = intDOF;</span>
+<span class="fc" id="L93">        dblFirstBaseTerms = new double[intNumSeg + 1];</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        for (int index = 0; index &lt;= intNumSeg; index++) {</span>
+<span class="fc" id="L95">            dblFirstBaseTerms[index] = 1.0 + (dblTotXi[index] * dblTotXi[index] / intDOF);</span>
         }
-<span class="fc" id="L107">        return Arrays.copyOf(dblFirstBaseTerms, dblFirstBaseTerms.length);</span>
+<span class="fc" id="L97">        return Arrays.copyOf(dblFirstBaseTerms, dblFirstBaseTerms.length);</span>
     }
 
-    /** Calcula -(dof + 1) / 2. */
-    public double computeXExponent(int intDOF) {
-<span class="fc bfc" id="L112" title="All 2 branches covered.">        if (intDOF &lt;= 0) {</span>
-<span class="fc" id="L113">            throw new IllegalArgumentException(&quot;Los grados de libertad deben ser positivos.&quot;);</span>
+     public double computeXExponent(int intDOF) {
+<span class="fc bfc" id="L101" title="All 2 branches covered.">        if (intDOF &lt;= 0) {</span>
+<span class="fc" id="L102">            throw new IllegalArgumentException(&quot;Los grados de libertad deben ser positivos.&quot;);</span>
         }
 
-<span class="fc" id="L116">        this.intDOF = intDOF;</span>
-<span class="fc" id="L117">        dblXExponent = -(intDOF + 1.0) / 2.0;</span>
-<span class="fc" id="L118">        return dblXExponent;</span>
+<span class="fc" id="L105">        this.intDOF = intDOF;</span>
+<span class="fc" id="L106">        dblXExponent = -(intDOF + 1.0) / 2.0;</span>
+<span class="fc" id="L107">        return dblXExponent;</span>
     }
 
-    /** Calcula el coeficiente Γ((dof + 1)/2) / (sqrt(dofπ) Γ(dof/2)). */
     public double computeCoeff(int intDOF) {
-<span class="fc bfc" id="L123" title="All 2 branches covered.">        if (intDOF &lt;= 0) {</span>
-<span class="fc" id="L124">            throw new IllegalArgumentException(&quot;Los grados de libertad deben ser positivos.&quot;);</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        if (intDOF &lt;= 0) {</span>
+<span class="fc" id="L112">            throw new IllegalArgumentException(&quot;Los grados de libertad deben ser positivos.&quot;);</span>
         }
 
-<span class="fc" id="L127">        this.intDOF = intDOF;</span>
-<span class="fc" id="L128">        double numerator = gammaFunction.computeDblGamma((intDOF + 1.0) / 2.0);</span>
-<span class="fc" id="L129">        double denominator = Math.sqrt(intDOF * Math.PI)</span>
-<span class="fc" id="L130">            * gammaFunction.computeDblGamma(intDOF / 2.0);</span>
-<span class="fc" id="L131">        dblCoeff = numerator / denominator;</span>
-<span class="fc" id="L132">        return dblCoeff;</span>
+<span class="fc" id="L115">        this.intDOF = intDOF;</span>
+<span class="fc" id="L116">        double numerator = gammaFunction.computeDblGamma((intDOF + 1.0) / 2.0);</span>
+<span class="fc" id="L117">        double denominator = Math.sqrt(intDOF * Math.PI)</span>
+<span class="fc" id="L118">            * gammaFunction.computeDblGamma(intDOF / 2.0);</span>
+<span class="fc" id="L119">        dblCoeff = numerator / denominator;</span>
+<span class="fc" id="L120">        return dblCoeff;</span>
     }
 
-    /** Evalúa la función de densidad t en todos los xi. */
-    public double[] computeFx(int intNumSeg) {
-<span class="fc bfc" id="L137" title="All 4 branches covered.">        if (dblFirstBaseTerms == null || dblFirstBaseTerms.length != intNumSeg + 1) {</span>
-<span class="fc" id="L138">            throw new IllegalStateException(&quot;Primero deben calcularse los términos base.&quot;);</span>
+     public double[] computeFx(int intNumSeg) {
+<span class="fc bfc" id="L124" title="All 4 branches covered.">        if (dblFirstBaseTerms == null || dblFirstBaseTerms.length != intNumSeg + 1) {</span>
+<span class="fc" id="L125">            throw new IllegalStateException(&quot;Primero deben calcularse los términos base.&quot;);</span>
         }
 
-<span class="fc" id="L141">        dblFx = new double[intNumSeg + 1];</span>
-<span class="fc bfc" id="L142" title="All 2 branches covered.">        for (int index = 0; index &lt;= intNumSeg; index++) {</span>
-<span class="fc" id="L143">            dblFx[index] = dblCoeff * Math.pow(dblFirstBaseTerms[index], dblXExponent);</span>
+<span class="fc" id="L128">        dblFx = new double[intNumSeg + 1];</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">        for (int index = 0; index &lt;= intNumSeg; index++) {</span>
+<span class="fc" id="L130">            dblFx[index] = dblCoeff * Math.pow(dblFirstBaseTerms[index], dblXExponent);</span>
         }
-<span class="fc" id="L145">        return Arrays.copyOf(dblFx, dblFx.length);</span>
+<span class="fc" id="L132">        return Arrays.copyOf(dblFx, dblFx.length);</span>
     }
 
-    /** Aplica los multiplicadores 1, 4, 2, ..., 4, 1 de Simpson. */
-    public double[] computeFinalTerms(int intNumSeg) {
-<span class="fc bfc" id="L150" title="All 4 branches covered.">        if (dblFx == null || dblFx.length != intNumSeg + 1) {</span>
-<span class="fc" id="L151">            throw new IllegalStateException(&quot;Primero deben calcularse los valores de f(xi).&quot;);</span>
+     public double[] computeFinalTerms(int intNumSeg) {
+<span class="fc bfc" id="L136" title="All 4 branches covered.">        if (dblFx == null || dblFx.length != intNumSeg + 1) {</span>
+<span class="fc" id="L137">            throw new IllegalStateException(&quot;Primero deben calcularse los valores de f(xi).&quot;);</span>
         }
 
-<span class="fc" id="L154">        dblFinalTerms = new double[intNumSeg + 1];</span>
-<span class="fc bfc" id="L155" title="All 2 branches covered.">        for (int index = 0; index &lt;= intNumSeg; index++) {</span>
-<span class="fc bfc" id="L156" title="All 4 branches covered.">            if (index == 0 || index == intNumSeg) {</span>
-<span class="fc" id="L157">                dblFinalTerms[index] = dblFx[index];</span>
-<span class="fc bfc" id="L158" title="All 2 branches covered.">            } else if (index % 2 == 0) {</span>
-<span class="fc" id="L159">                dblFinalTerms[index] = 2.0 * dblFx[index];</span>
+<span class="fc" id="L140">        dblFinalTerms = new double[intNumSeg + 1];</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">        for (int index = 0; index &lt;= intNumSeg; index++) {</span>
+<span class="fc bfc" id="L142" title="All 4 branches covered.">            if (index == 0 || index == intNumSeg) {</span>
+<span class="fc" id="L143">                dblFinalTerms[index] = dblFx[index];</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">            } else if (index % 2 == 0) {</span>
+<span class="fc" id="L145">                dblFinalTerms[index] = 2.0 * dblFx[index];</span>
             } else {
-<span class="fc" id="L161">                dblFinalTerms[index] = 4.0 * dblFx[index];</span>
+<span class="fc" id="L147">                dblFinalTerms[index] = 4.0 * dblFx[index];</span>
             }
         }
-<span class="fc" id="L164">        return Arrays.copyOf(dblFinalTerms, dblFinalTerms.length);</span>
+<span class="fc" id="L150">        return Arrays.copyOf(dblFinalTerms, dblFinalTerms.length);</span>
     }
 
-    /** Suma los términos ponderados y los multiplica por W / 3. */
-    public double computeFinalValue(int intNumSeg) {
-<span class="fc bfc" id="L169" title="All 4 branches covered.">        if (dblFinalTerms == null || dblFinalTerms.length != intNumSeg + 1) {</span>
-<span class="fc" id="L170">            throw new IllegalStateException(&quot;Primero deben calcularse los términos finales.&quot;);</span>
+     public double computeFinalValue(int intNumSeg) {
+<span class="fc bfc" id="L154" title="All 4 branches covered.">        if (dblFinalTerms == null || dblFinalTerms.length != intNumSeg + 1) {</span>
+<span class="fc" id="L155">            throw new IllegalStateException(&quot;Primero deben calcularse los términos finales.&quot;);</span>
         }
 
-<span class="fc" id="L173">        double sum = 0.0;</span>
-<span class="fc bfc" id="L174" title="All 2 branches covered.">        for (double term : dblFinalTerms) {</span>
-<span class="fc" id="L175">            sum += term;</span>
+<span class="fc" id="L158">        double sum = 0.0;</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">        for (double term : dblFinalTerms) {</span>
+<span class="fc" id="L160">            sum += term;</span>
         }
 
-<span class="fc" id="L178">        dblFinalValue = dblW * sum / 3.0;</span>
-<span class="fc" id="L179">        return dblFinalValue;</span>
+<span class="fc" id="L163">        dblFinalValue = dblW * sum / 3.0;</span>
+<span class="fc" id="L164">        return dblFinalValue;</span>
     }
 
     public int getIntNumSeg() {
-<span class="fc" id="L183">        return intNumSeg;</span>
+<span class="fc" id="L168">        return intNumSeg;</span>
     }
 
     public double getDblW() {
-<span class="fc" id="L187">        return dblW;</span>
+<span class="fc" id="L172">        return dblW;</span>
     }
 
     public double getDblE() {
-<span class="fc" id="L191">        return dblE;</span>
+<span class="fc" id="L176">        return dblE;</span>
     }
 
     public double getDblFinalValue() {
-<span class="fc" id="L195">        return dblFinalValue;</span>
+<span class="fc" id="L180">        return dblFinalValue;</span>
     }
 
     private double calculateCurrentApproximation() {
-<span class="fc" id="L199">        computeW(intNumSeg, dblX);</span>
-<span class="fc" id="L200">        computeXi(intNumSeg);</span>
-<span class="fc" id="L201">        computeFirstBaseTerms(intNumSeg, dblTotXi, intDOF);</span>
-<span class="fc" id="L202">        computeXExponent(intDOF);</span>
-<span class="fc" id="L203">        computeCoeff(intDOF);</span>
-<span class="fc" id="L204">        computeFx(intNumSeg);</span>
-<span class="fc" id="L205">        computeFinalTerms(intNumSeg);</span>
-<span class="fc" id="L206">        return computeFinalValue(intNumSeg);</span>
+<span class="fc" id="L184">        computeW(intNumSeg, dblX);</span>
+<span class="fc" id="L185">        computeXi(intNumSeg);</span>
+<span class="fc" id="L186">        computeFirstBaseTerms(intNumSeg, dblTotXi, intDOF);</span>
+<span class="fc" id="L187">        computeXExponent(intDOF);</span>
+<span class="fc" id="L188">        computeCoeff(intDOF);</span>
+<span class="fc" id="L189">        computeFx(intNumSeg);</span>
+<span class="fc" id="L190">        computeFinalTerms(intNumSeg);</span>
+<span class="fc" id="L191">        return computeFinalValue(intNumSeg);</span>
     }
 
     private void validateInput(double initialX, double finalX, int intDOF) {
-<span class="fc bfc" id="L210" title="All 4 branches covered.">        if (!Double.isFinite(initialX) || !Double.isFinite(finalX)) {</span>
-<span class="fc" id="L211">            throw new IllegalArgumentException(&quot;Los límites de integración deben ser finitos.&quot;);</span>
+<span class="fc bfc" id="L195" title="All 4 branches covered.">        if (!Double.isFinite(initialX) || !Double.isFinite(finalX)) {</span>
+<span class="fc" id="L196">            throw new IllegalArgumentException(&quot;Los límites de integración deben ser finitos.&quot;);</span>
         }
-<span class="fc bfc" id="L213" title="All 2 branches covered.">        if (intDOF &lt;= 0) {</span>
-<span class="fc" id="L214">            throw new IllegalArgumentException(&quot;Los grados de libertad deben ser mayores que cero.&quot;);</span>
+<span class="fc bfc" id="L198" title="All 2 branches covered.">        if (intDOF &lt;= 0) {</span>
+<span class="fc" id="L199">            throw new IllegalArgumentException(&quot;Los grados de libertad deben ser mayores que cero.&quot;);</span>
         }
-<span class="fc" id="L216">    }</span>
+<span class="fc" id="L201">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

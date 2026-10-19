@@ -1,8 +1,6 @@
 import java.util.Arrays;
 
-/**
- * Integra la función de densidad t de Student mediante la regla de Simpson.
- */
+
 public class SimpsonIntegration {
 
     public static final int INITIAL_NUM_SEGMENTS = 10;
@@ -37,11 +35,7 @@ public class SimpsonIntegration {
         gammaFunction = new GammaFunction();
     }
 
-    /**
-     * Obtiene el área bajo la distribución t entre los dos límites indicados.
-     * Se duplica el número de segmentos hasta que dos aproximaciones
-     * consecutivas difieren menos que el error aceptable.
-     */
+  
     public double integrate(double initialX, double finalX, int intDOF) {
         validateInput(initialX, finalX, intDOF);
 
@@ -64,8 +58,7 @@ public class SimpsonIntegration {
         }
     }
 
-    /** Calcula W = (valor final - valor inicial) / número de segmentos. */
-    public double computeW(int intNumSeg, double dblX) {
+       public double computeW(int intNumSeg, double dblX) {
         if (intNumSeg <= 0 || intNumSeg % 2 != 0) {
             throw new IllegalArgumentException("El número de segmentos debe ser positivo y par.");
         }
@@ -75,8 +68,6 @@ public class SimpsonIntegration {
         dblW = (dblX - dblInitialX) / intNumSeg;
         return dblW;
     }
-
-    /** Calcula xi = valor inicial + iW, para i desde 0 hasta numSeg. */
     public double[] computeXi(int intNumSeg) {
         if (intNumSeg != this.intNumSeg) {
             throw new IllegalArgumentException("El número de segmentos no coincide con W.");
@@ -89,7 +80,6 @@ public class SimpsonIntegration {
         return Arrays.copyOf(dblTotXi, dblTotXi.length);
     }
 
-    /** Calcula 1 + (xi² / dof), la base de la potencia de la distribución t. */
     public double[] computeFirstBaseTerms(
         int intNumSeg,
         double[] dblTotXi,
@@ -107,8 +97,7 @@ public class SimpsonIntegration {
         return Arrays.copyOf(dblFirstBaseTerms, dblFirstBaseTerms.length);
     }
 
-    /** Calcula -(dof + 1) / 2. */
-    public double computeXExponent(int intDOF) {
+     public double computeXExponent(int intDOF) {
         if (intDOF <= 0) {
             throw new IllegalArgumentException("Los grados de libertad deben ser positivos.");
         }
@@ -118,7 +107,6 @@ public class SimpsonIntegration {
         return dblXExponent;
     }
 
-    /** Calcula el coeficiente Γ((dof + 1)/2) / (sqrt(dofπ) Γ(dof/2)). */
     public double computeCoeff(int intDOF) {
         if (intDOF <= 0) {
             throw new IllegalArgumentException("Los grados de libertad deben ser positivos.");
@@ -132,8 +120,7 @@ public class SimpsonIntegration {
         return dblCoeff;
     }
 
-    /** Evalúa la función de densidad t en todos los xi. */
-    public double[] computeFx(int intNumSeg) {
+     public double[] computeFx(int intNumSeg) {
         if (dblFirstBaseTerms == null || dblFirstBaseTerms.length != intNumSeg + 1) {
             throw new IllegalStateException("Primero deben calcularse los términos base.");
         }
@@ -145,8 +132,7 @@ public class SimpsonIntegration {
         return Arrays.copyOf(dblFx, dblFx.length);
     }
 
-    /** Aplica los multiplicadores 1, 4, 2, ..., 4, 1 de Simpson. */
-    public double[] computeFinalTerms(int intNumSeg) {
+     public double[] computeFinalTerms(int intNumSeg) {
         if (dblFx == null || dblFx.length != intNumSeg + 1) {
             throw new IllegalStateException("Primero deben calcularse los valores de f(xi).");
         }
@@ -164,8 +150,7 @@ public class SimpsonIntegration {
         return Arrays.copyOf(dblFinalTerms, dblFinalTerms.length);
     }
 
-    /** Suma los términos ponderados y los multiplica por W / 3. */
-    public double computeFinalValue(int intNumSeg) {
+     public double computeFinalValue(int intNumSeg) {
         if (dblFinalTerms == null || dblFinalTerms.length != intNumSeg + 1) {
             throw new IllegalStateException("Primero deben calcularse los términos finales.");
         }

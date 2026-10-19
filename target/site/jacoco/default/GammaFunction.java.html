@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GammaFunction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">5a-simpson-rule</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">GammaFunction.java</span></div><h1>GammaFunction.java</h1><pre class="source lang-java linenums">/** Calcula la función gamma para los valores requeridos por la distribución t. */
-<span class="fc" id="L2">public class GammaFunction {</span>
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GammaFunction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">5a-simpson-rule</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">GammaFunction.java</span></div><h1>GammaFunction.java</h1><pre class="source lang-java linenums"><span class="fc" id="L1">public class GammaFunction {</span>
 
-<span class="fc" id="L4">    private static final double[] LANCZOS_COEFFICIENTS = {</span>
+<span class="fc" id="L3">    private static final double[] LANCZOS_COEFFICIENTS = {</span>
         0.99999999999980993,
         676.5203681218851,
         -1259.1392167224028,
@@ -15,70 +14,57 @@
 
     private double gammaValue;
 
-    /**
-     * Calcula Γ(n) = (n - 1)! para n entero positivo.
-     *
-     * @param intValue argumento entero positivo
-     * @return el valor de Γ(intValue)
-     */
     public double computeIntGamma(int intValue) {
-<span class="fc bfc" id="L25" title="All 2 branches covered.">        if (intValue &lt;= 0) {</span>
-<span class="fc" id="L26">            throw new IllegalArgumentException(&quot;Gamma solo está definida aquí para valores positivos.&quot;);</span>
+<span class="fc bfc" id="L18" title="All 2 branches covered.">        if (intValue &lt;= 0) {</span>
+<span class="fc" id="L19">            throw new IllegalArgumentException(&quot;Gamma solo está definida aquí para valores positivos.&quot;);</span>
         }
 
-<span class="fc" id="L29">        double result = 1.0;</span>
-<span class="fc bfc" id="L30" title="All 2 branches covered.">        for (int value = 2; value &lt; intValue; value++) {</span>
-<span class="fc" id="L31">            result *= value;</span>
+<span class="fc" id="L22">        double result = 1.0;</span>
+<span class="fc bfc" id="L23" title="All 2 branches covered.">        for (int value = 2; value &lt; intValue; value++) {</span>
+<span class="fc" id="L24">            result *= value;</span>
         }
 
-<span class="fc" id="L34">        gammaValue = result;</span>
-<span class="fc" id="L35">        return gammaValue;</span>
+<span class="fc" id="L27">        gammaValue = result;</span>
+<span class="fc" id="L28">        return gammaValue;</span>
     }
 
-    /**
-     * Calcula Γ(x) para un valor real positivo. Para los grados de libertad
-     * enteros del ejercicio se usa, entre otros, Γ(n + 1/2).
-     *
-     * @param doubleValue argumento real positivo
-     * @return el valor de Γ(doubleValue)
-     */
     public double computeDblGamma(double doubleValue) {
-<span class="fc bfc" id="L46" title="All 4 branches covered.">        if (!Double.isFinite(doubleValue) || doubleValue &lt;= 0.0) {</span>
-<span class="fc" id="L47">            throw new IllegalArgumentException(&quot;El argumento de gamma debe ser positivo y finito.&quot;);</span>
+<span class="fc bfc" id="L32" title="All 4 branches covered.">        if (!Double.isFinite(doubleValue) || doubleValue &lt;= 0.0) {</span>
+<span class="fc" id="L33">            throw new IllegalArgumentException(&quot;El argumento de gamma debe ser positivo y finito.&quot;);</span>
         }
 
-<span class="fc bfc" id="L50" title="All 4 branches covered.">        if (doubleValue == Math.rint(doubleValue)</span>
+<span class="fc bfc" id="L36" title="All 4 branches covered.">        if (doubleValue == Math.rint(doubleValue)</span>
             &amp;&amp; doubleValue &lt;= Integer.MAX_VALUE) {
-<span class="fc" id="L52">            return computeIntGamma((int) Math.rint(doubleValue));</span>
+<span class="fc" id="L38">            return computeIntGamma((int) Math.rint(doubleValue));</span>
         }
 
-<span class="fc" id="L55">        gammaValue = Math.exp(logGamma(doubleValue));</span>
-<span class="fc" id="L56">        return gammaValue;</span>
+<span class="fc" id="L41">        gammaValue = Math.exp(logGamma(doubleValue));</span>
+<span class="fc" id="L42">        return gammaValue;</span>
     }
 
     public double getGammaValue() {
-<span class="fc" id="L60">        return gammaValue;</span>
+<span class="fc" id="L46">        return gammaValue;</span>
     }
 
     private double logGamma(double value) {
-<span class="fc bfc" id="L64" title="All 2 branches covered.">        if (value &lt; 0.5) {</span>
-<span class="fc" id="L65">            return Math.log(Math.PI)</span>
-<span class="fc" id="L66">                - Math.log(Math.sin(Math.PI * value))</span>
-<span class="fc" id="L67">                - logGamma(1.0 - value);</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        if (value &lt; 0.5) {</span>
+<span class="fc" id="L51">            return Math.log(Math.PI)</span>
+<span class="fc" id="L52">                - Math.log(Math.sin(Math.PI * value))</span>
+<span class="fc" id="L53">                - logGamma(1.0 - value);</span>
         }
 
-<span class="fc" id="L70">        double adjustedValue = value - 1.0;</span>
-<span class="fc" id="L71">        double series = LANCZOS_COEFFICIENTS[0];</span>
+<span class="fc" id="L56">        double adjustedValue = value - 1.0;</span>
+<span class="fc" id="L57">        double series = LANCZOS_COEFFICIENTS[0];</span>
 
-<span class="fc bfc" id="L73" title="All 2 branches covered.">        for (int index = 1; index &lt; LANCZOS_COEFFICIENTS.length; index++) {</span>
-<span class="fc" id="L74">            series += LANCZOS_COEFFICIENTS[index] / (adjustedValue + index);</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        for (int index = 1; index &lt; LANCZOS_COEFFICIENTS.length; index++) {</span>
+<span class="fc" id="L60">            series += LANCZOS_COEFFICIENTS[index] / (adjustedValue + index);</span>
         }
 
-<span class="fc" id="L77">        double t = adjustedValue + LANCZOS_COEFFICIENTS.length - 1.5;</span>
-<span class="fc" id="L78">        return 0.5 * Math.log(2.0 * Math.PI)</span>
-<span class="fc" id="L79">            + (adjustedValue + 0.5) * Math.log(t)</span>
+<span class="fc" id="L63">        double t = adjustedValue + LANCZOS_COEFFICIENTS.length - 1.5;</span>
+<span class="fc" id="L64">        return 0.5 * Math.log(2.0 * Math.PI)</span>
+<span class="fc" id="L65">            + (adjustedValue + 0.5) * Math.log(t)</span>
             - t
-<span class="fc" id="L81">            + Math.log(series);</span>
+<span class="fc" id="L67">            + Math.log(series);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>
